@@ -1,7 +1,8 @@
 #include "graph.h"
-struct Node* createNode(int v){
+struct Node* createNode(int v, int w){
     struct Node* newNode = malloc(sizeof(struct Graph));
     newNode->vertex = v;
+    newNode->weight = w;
     newNode->next = NULL;
     return newNode;
 }
@@ -22,12 +23,13 @@ struct Graph* createGraph(int numVertices, bool isDirected){
 }
 
 
-void addEdge(Graph* graph, int src, int des){
-    struct Node* newNode = createNode(des);
+void addEdge(Graph* graph, int src, int des, int w){
+    struct Node* newNode = createNode(des,w);
     newNode->next = graph->adjList[src];
+
     graph->adjList[src] = newNode;
     if(!graph->isDirected){
-        newNode = createNode(src);
+        newNode = createNode(src,w);
         newNode->next =  graph->adjList[des];
         graph->adjList[des] = newNode;
     }
@@ -35,14 +37,14 @@ void addEdge(Graph* graph, int src, int des){
 }
 
 void printGraph(Graph* graph){
-    printf("Vertex: Linked list");
-    for(int v = 0;v < graph->numVertices; v++){
+    for(int v = 0; v < graph->numVertices; v++){
         struct Node* temp = graph->adjList[v];
-        printf("%d ----->",v);
+        printf("Vertex: [%d]", v);
         while(temp){
-            printf("%d ->", temp->vertex);
+            printf("-%d->[%d]", temp->weight, temp->vertex);
             temp = temp->next;
         }
-        printf("NULL\n");
+        printf("\n");
+        
     }
 }
